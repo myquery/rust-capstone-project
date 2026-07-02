@@ -60,7 +60,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Get blockchain info
     let blockchain_info = rpc.get_blockchain_info()?;
-    println!("Blockchain Info: {:?}", blockchain_info);
+    println!("Blockchain Info: {blockchain_info:?}");
 
     // Create/Load the wallets, named 'Miner' and 'Trader'. Have logic to optionally create/load them if they do not exist or not loaded already.
     let miner = ensure_wallet(&rpc, "Miner")?;
@@ -104,7 +104,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Check transaction in mempool
     let mempool_entry = miner.get_mempool_entry(&txid)?;
-    println!("Mempool entry: {:?}", mempool_entry);
+    println!("Mempool entry: {mempool_entry:?}");
 
     // Mine 1 block to confirm the transaction
     let block_num = 1;
@@ -124,7 +124,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let miner_input = decoded_transaction["vin"]
         .as_array()
         .ok_or("Decoded transaction is missing vin array")?
-        .get(0)
+        .first()
         .ok_or("Decoded transaction has no inputs")?;
 
     let transaction_outputs = decoded_transaction["vout"]
